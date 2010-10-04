@@ -1,0 +1,1 @@
+<% @attributes.each do |attr| %><%= attr.setter %><% end %>

@@ -5,13 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "protomsg"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = "Protocol Message Buffers for C"
+    gem.description = "Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL."
     gem.email = "me@willcannings.com"
     gem.homepage = "http://github.com/willcannings/protomsg"
     gem.authors = ["Will Cannings"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+    gem.executables = ["protomsg"]
+    gem.files = ["lib/**/*.rb", "lib/templates/**/*.h", "bin/*"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -1,0 +1,1 @@
+if(msg-><%= @name %>){free(msg-><%= @name %>);}\

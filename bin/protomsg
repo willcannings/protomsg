@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'protomsg'
+
+unless ARGV.size == 1
+  puts "Usage: protomsg input_file"
+else
+  Protomsg.parse_file(ARGV[0])
+end

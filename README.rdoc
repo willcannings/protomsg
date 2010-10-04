@@ -1,17 +1,61 @@
 = protomsg
 
-Description goes here.
+Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+== Example
+Input for a 'request' message:
 
-== Copyright
+    request {
+      int     type
+      string  key
+      raw     data
+    }
 
-Copyright (c) 2010 Will Cannings. See LICENSE for details.
+Output is a header file of macros for reading, writing and manipulating request messages:
+
+    // attribute getters
+    get_request_type
+    get_request_key
+    get_request_data
+    
+    // attribute setters
+    set_request_type
+    set_request_key
+    set_request_data
+    
+    // lengths
+    request_key_length
+    request_data_length
+    request_length
+    
+    // memory & IO
+    init_request
+    free_request
+    write_request
+    read_request
+
+The macros generate highly optimised, copy free socket code (using the scatter/gather IO functions readv and writev), and automatically check message sanity, and handle incomplete reads and writes. Message types with many variable length attributes (strings or raw data segments) will benefit more from the generated code than message types primarily made up of fixed length attributes.
+
+== Usage
+Call the protomsg script with the message types input file.
+
+    $ protomsg mymessages.protomsg
+    Created protomsg.h
+    Created request_message.h
+
+Each file may describe multiple message types. The format for each message type is:
+
+    message_type_name {
+        attribute_type  attribute_name
+        ...
+    }
+
+All message type and attribute names must be valid C identifiers. Valid attribute types are:
+
+    int     64 bit signed integer
+    float   64 bit float
+    string  C string
+    raw     Raw bytes
+
+== Known Issues
+All clients are servers are assumed to be on machines of the same endianess.
