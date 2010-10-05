@@ -3,7 +3,9 @@
 #ifndef __protomsg__
 #define __protomsg__
 
-#define PROTO_MESSAGE_VERSION 1
+#define PROTO_MESSAGE_VERSION   1
+#define INVALID_PROTOMSG_HEADER 1
+
 #define read_struct(sock, structure, size, error) {\
   ssize_t bytes_read = 0, bytes_total = 0;\
   error = 0;\
