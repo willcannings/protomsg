@@ -9,7 +9,7 @@
 #define read_<%= @name %>(msg, sock, error) {\
   error = 0;\
   if(!msg) {\
-    msg = (<%= @name %> *) malloc(sizeof(<%= @name %>));\
+    msg = (<%= @name %> *) calloc(1, sizeof(<%= @name %>));\
     msg->header_length = sizeof(<%= @name %>_header);\
     msg->header = (<%= @name %>_header *)malloc(sizeof(<%= @name %>_header));\
   }\

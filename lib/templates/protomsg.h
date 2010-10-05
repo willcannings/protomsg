@@ -9,8 +9,8 @@
 #define __protomsg__
 
 #define PROTO_MESSAGE_VERSION     1
-#define INVALID_PROTOMSG_VERSION  1
-#define INVALID_MESSAGE_TYPE      2
+#define INVALID_PROTOMSG_VERSION  -1
+#define INVALID_MESSAGE_TYPE      -2
 
 #define safe_read(sock, buffer, size, error) {\
   error = 0;\
