@@ -2,7 +2,7 @@
 
 Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL.
 
-== Example
+== Overview
 Input for a 'request' message:
 
     request {
@@ -56,6 +56,74 @@ All message type and attribute names must be valid C identifiers. Valid attribut
     float   64 bit float
     string  C string
     raw     Raw bytes
+
+== Example
+Once you have defined your message types, sending and receiving messages is easy. For example, given the following message type:
+
+    # ping_message.protomsg
+    ping {
+        int     number
+        string  message
+    }
+    
+    response {
+        int     code
+    }
+
+Use the protomsg script:
+
+    $ protomsg ping_message.protomsg
+    Created protomsg.h
+    Created ping_message.h
+    Creates response_message.h
+
+A number of utility macros are defined that make it easy to write clients and servers. An example client could be written as:
+
+    #include "response_message.h"
+    #include "ping_message.h"
+    
+    int main(void) {
+        int error, server;
+        response *r;
+        ping *p;
+        
+        // create the ping message
+        init_ping(p);
+        set_ping_number(1);
+        set_ping_message("Hello World!");
+        
+        // connect to the server and send the message
+        connect_to_server("localhost", 9000, server, error);
+        write_ping(p, server, error);
+        
+        // read a response message
+        read_response(r, server, error);
+        printf("Response code was: %i\n", get_response_code(r));
+    }
+
+And the corresponding server could be:
+
+    #include "response_message.h"
+    #include "ping_message.h"
+    
+    int main(void) {
+        int error, server, client;
+        response *r;
+        ping *p;
+        
+        // start a server and wait for a ping message
+        create_server_socket(9000, server, error);
+        accept_client(server, client);
+        read_ping(p, client, error);
+        printf("Received ping: %i, %s\n", get_ping_number(p), get_ping_message(p));
+        
+        // create a response message and send
+        init_response(r);
+        set_response_code(r, 1);
+        write_response(r, client, error);
+    }
+
+It's not necessary to use the included socket helper macros - you can use protomsg's over any socket - but for simple client/server applications like this they help reduce the amount of code required to get something running quickly.
 
 == Known Issues
 All clients are servers are assumed to be on machines of the same endianess.

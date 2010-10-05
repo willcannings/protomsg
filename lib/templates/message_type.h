@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include "protomsg.h"
 
+#ifndef __protomsg_<%= @name %>__
+#define __protomsg_<%= @name %>__
+
 #define <%= @name.upcase %>_MESSAGE_TYPE  <%= @type_number %>
 
 <%= header %>
@@ -23,3 +26,5 @@
 <%= memory %>
 // io
 <%= io %>
+
+#endif

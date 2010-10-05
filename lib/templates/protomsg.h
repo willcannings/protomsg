@@ -20,4 +20,14 @@
   }\
 }
 
+#define create_server_socket(port, sock, error) {\
+}
+
+#define accept_client(sock, client) {\
+  client = accept(sock, NULL, NULL);\
+}
+
+#define connect_to_server(address, port, sock, error) {\
+}
+
 #endif
