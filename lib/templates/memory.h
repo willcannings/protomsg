@@ -11,3 +11,8 @@
   free(msg->header);\
   free(msg);\
 }
+
+#define free_<%= @name %>_structure(msg) {\
+  free(msg->header);\
+  free(msg);\
+}

@@ -1,6 +1,6 @@
 = protomsg
 
-Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL.
+Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL. The code is highly optimised and often similar to what you would write by hand manually.
 
 == Overview
 Input for a 'request' message:
@@ -34,7 +34,7 @@ Output is a header file of macros for reading, writing and manipulating request 
     write_request
     read_request
 
-The macros generate highly optimised, copy free socket code (using the scatter/gather IO functions readv and writev), and automatically check message sanity, and handle incomplete reads and writes. Message types with many variable length attributes (strings or raw data segments) will benefit more from the generated code than message types primarily made up of fixed length attributes.
+The macros generate highly optimised copy free socket code (using scatter/gather IO functions), and automatically check message sanity and handle incomplete reads and writes. The generated code is often very similar to what you would write by hand, and in some cases is even faster.
 
 == Usage
 Call the protomsg script with the message types input file.
@@ -58,7 +58,7 @@ All message type and attribute names must be valid C identifiers. Valid attribut
     raw     Raw bytes
 
 == Example
-Once you have defined your message types, sending and receiving messages is easy. For example, given the following message type:
+Once you have defined your message types, sending and receiving messages is easy. For example, given the following message type definitions:
 
     # ping_message.protomsg
     ping {
@@ -113,7 +113,7 @@ And the corresponding server could be:
     
         // start a server and wait for a ping message
         create_server_socket(9000, 1, server, error);
-        accept_client(server, client);
+        accept_client(server, client, error);
         read_ping(p, client, error);
         printf("Received ping: %llu, %s\n", get_ping_number(p), get_ping_message(p));
     
@@ -123,7 +123,7 @@ And the corresponding server could be:
         write_response(r, client, error);
     }
 
-It's not necessary to use the included socket helper macros - you can use protomsg's over any socket - but for simple client/server applications like this they help reduce the amount of code required to get something running quickly.
+It's not necessary to use the included socket helper macros - you can use proto messages over any socket - but for simple client/server applications like this they help reduce the amount of code required to get something running quickly.
 
 == Known Issues
-All clients are servers are assumed to be on machines of the same endianess.
+All clients are servers are assumed to be on machines of the same endianess. The simple socket creation macros can't create IP6 sockets as yet. Writev is used to send messages; an error is currently raised when an incomplete write completes, rather than restart the write where it was left off.
