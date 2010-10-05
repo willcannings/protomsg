@@ -1,1 +1,1 @@
-int <%= @name %>_length;
+long long <%= @name %>_length;

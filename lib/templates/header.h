@@ -1,3 +1,5 @@
+#pragma pack(push)
+#pragma pack(1)
 typedef struct {
   char  _version;
   char  _type;<% @attributes.each do |attr|%>
@@ -10,3 +12,4 @@ typedef struct {
   void    *<%= attr.name %>;
   size_t  <%= attr.name %>_length;<% end %>
 } <%= @name %>;
+#pragma pack(pop)
