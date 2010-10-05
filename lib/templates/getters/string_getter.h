@@ -1,1 +1,1 @@
-#define get_<%= @message_type.name %>_<%= @name %>(msg) (msg-><%= @name %>)
+#define get_<%= @message_type.name %>_<%= @name %>(msg) ((char *)msg-><%= @name %>)

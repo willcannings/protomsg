@@ -86,19 +86,19 @@ A number of utility macros are defined that make it easy to write clients and se
         int error, server;
         response *r;
         ping *p;
-        
+    
         // create the ping message
         init_ping(p);
-        set_ping_number(1);
-        set_ping_message("Hello World!");
-        
+        set_ping_number(p, 1);
+        set_ping_message(p, "Hello World!");
+    
         // connect to the server and send the message
         connect_to_server("localhost", 9000, server, error);
         write_ping(p, server, error);
-        
+    
         // read a response message
         read_response(r, server, error);
-        printf("Response code was: %i\n", get_response_code(r));
+        printf("Response code was: %llu\n", get_response_code(r));
     }
 
 And the corresponding server could be:
@@ -110,13 +110,13 @@ And the corresponding server could be:
         int error, server, client;
         response *r;
         ping *p;
-        
+    
         // start a server and wait for a ping message
-        create_server_socket(9000, server, error);
+        create_server_socket(9000, 1, server, error);
         accept_client(server, client);
         read_ping(p, client, error);
-        printf("Received ping: %i, %s\n", get_ping_number(p), get_ping_message(p));
-        
+        printf("Received ping: %llu, %s\n", get_ping_number(p), get_ping_message(p));
+    
         // create a response message and send
         init_response(r);
         set_response_code(r, 1);

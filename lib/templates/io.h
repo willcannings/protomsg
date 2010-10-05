@@ -11,7 +11,7 @@
   msg->header_length = sizeof(<%= @name %>_header);\
   msg->header = (<%= @name %>_header *)malloc(sizeof(<%= @name %>_header));\
   read_struct(sock, msg->header, sizeof(<%= @name %>_header), error);\
-  if(error == 0) {\
+  if(!error) {\
     if(msg->header->_version == PROTO_MESSAGE_VERSION && msg->header->_type == <%= @name.upcase %>_MESSAGE_TYPE) {\
       <% variable_attributes.each do |attr| %>msg-><%= attr.name %>_length = msg->header-><%= attr.name %>_length;\
       msg-><%= attr.name %> = malloc(msg->header-><%= attr.name %>_length);\
