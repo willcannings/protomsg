@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{protomsg}
-  s.version = "0.7.0"
+  s.version = "0.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Will Cannings"]
-  s.date = %q{2010-10-05}
+  s.date = %q{2010-10-06}
   s.default_executable = %q{protomsg}
   s.description = %q{Protocol Message Buffers for C. This gem generates C socket code for reading and writing messages described in the protomsg DSL.}
   s.email = %q{me@willcannings.com}
